@@ -6,10 +6,10 @@
 
     <com.example.paritosh.copycat.CatButtonLayout
             android:id="@+id/catButton"
-            android:layout_width="240dp"
-            android:layout_height="240dp"
+            android:layout_width="@dimen/cat_button_size"
+            android:layout_height="@dimen/cat_button_size"
             android:layout_gravity="center"
-            android:background="@color/colorAccent"
+            android:background="@color/colorPrimaryDark"
             app:radius="80dp">
 
         <android.support.v7.widget.AppCompatImageButton

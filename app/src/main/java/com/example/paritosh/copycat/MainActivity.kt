@@ -9,38 +9,39 @@ import android.widget.Switch
 
 class MainActivity : AppCompatActivity() {
 
-    private val settingSharedPreferences = "settingSharedPreferences"
-    private val permissionBoolean = "settingSharedPreferences"
-
+    companion object {
+        const val preferences = "preferences"
+        const val permissionBoolean = "permissionBoolean"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         val switch = findViewById<Switch>(R.id.permissionSwitch)
-        val sharedPreferences = getSharedPreferences(settingSharedPreferences, Context.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
-
+        val sharedPreferences = getSharedPreferences(preferences, Context.MODE_PRIVATE)
 
         switch.isChecked = sharedPreferences.getBoolean(permissionBoolean, false)
-        switch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                modifyingPreferences(editor, isChecked)
-                settingIntent(CopyService.ACTION_START_FOREGROUND_SERVICE)
-            } else {
-                modifyingPreferences(editor, isChecked)
-                settingIntent(CopyService.ACTION_STOP_FOREGROUND_SERVICE)
-            }
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            modifyingPreferences(sharedPreferences, isChecked)
+            postActionToCatService(
+                if (isChecked)
+                    CopyService.ACTION_START_FOREGROUND_SERVICE
+                else
+                    CopyService.ACTION_STOP_FOREGROUND_SERVICE
+            )
         }
     }
 
-    private fun settingIntent(setServiceState: String) {
+    private fun postActionToCatService(action: String) {
         val intent = Intent(this@MainActivity, CopyService::class.java)
-        intent.action = setServiceState
+        intent.action = action
         startService(intent)
     }
 
-    private fun modifyingPreferences(editor: SharedPreferences.Editor, isChecked: Boolean) {
+    private fun modifyingPreferences(sharedPreferences: SharedPreferences, isChecked: Boolean) {
+        val editor = sharedPreferences.edit()
         editor.putBoolean(permissionBoolean, isChecked)
         editor.apply()
     }

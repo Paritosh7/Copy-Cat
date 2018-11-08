@@ -7,8 +7,6 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
-import android.view.animation.LinearInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageButton
@@ -35,14 +33,15 @@ class CatButtonLayout @JvmOverloads constructor(
             ImageButton(context).apply {
                 layoutParams =
                         LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT)
-                            .apply { gravity = Gravity.CENTER }
+                            .apply { gravity = Gravity.END or Gravity.CENTER or Gravity.DISPLAY_CLIP_HORIZONTAL }
                 setImageResource(R.drawable.cat)
                 setBackgroundResource(R.drawable.cat_button_bg_selector)
                 setOnClickListener { if (isExpanded) collapse() else expand() }
             }
         )
         iterateOverChildButtons { i ->
-            (getChildAt(i).layoutParams as LayoutParams).gravity = Gravity.CENTER
+            (getChildAt(i).layoutParams as LayoutParams).gravity = Gravity.END or Gravity.CENTER or
+                    Gravity.DISPLAY_CLIP_HORIZONTAL
         }
         showChildButtons(false)
     }

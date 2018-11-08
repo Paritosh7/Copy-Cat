@@ -6,7 +6,6 @@ import android.graphics.Rect
 import android.os.Build
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
 import android.view.WindowManager
 
 class CatOverlay constructor(context: Context) {
@@ -55,7 +54,7 @@ class CatOverlay constructor(context: Context) {
     }
 
     fun setOnCatButtonClickListener(onCatButtonClickListener: OnCatButtonClickListener) {
-        view.findViewById<CatButtonLayout>(R.id.catButton).setOnChildButtonClickListener { i, view ->
+        view.findViewById<CatButtonLayout>(R.id.catButton).setOnChildButtonClickListener { _, view ->
             when (view.id) {
                 R.id.web -> onCatButtonClickListener.onCatButtonClick(OnCatButtonClickListener.ButtonType.WEB)
                 R.id.dictionary -> onCatButtonClickListener.onCatButtonClick(OnCatButtonClickListener.ButtonType.DICTIONARY)
@@ -64,16 +63,12 @@ class CatOverlay constructor(context: Context) {
         }
     }
 
-
     interface OnCatButtonClickListener {
         enum class ButtonType {
             WEB,
             DICTIONARY,
             TRANSLATE
         }
-
         fun onCatButtonClick(buttonType: ButtonType)
     }
-
-
 }

@@ -15,7 +15,6 @@ class CopyService : Service() {
         private const val CHANNEL_ID: String = "channel_Id"
         const val ACTION_START_FOREGROUND_SERVICE = "ACTION_START_FOREGROUND_SERVICE"
         const val ACTION_STOP_FOREGROUND_SERVICE = "ACTION_STOP_FOREGROUND_SERVICE"
-
     }
 
     private var overlay: CatOverlay? = null
@@ -23,35 +22,25 @@ class CopyService : Service() {
     override fun onCreate() {
         super.onCreate()
         registerClipboardListener()
-
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
-        if (intent != null) {
-            var action = intent.action
-            when (action) {
-                ACTION_START_FOREGROUND_SERVICE -> setForegroundService()
-
-                ACTION_STOP_FOREGROUND_SERVICE -> setStopForegroundService()
-
-            }
-
+        when (intent?.action) {
+            ACTION_START_FOREGROUND_SERVICE -> startCatService()
+            ACTION_STOP_FOREGROUND_SERVICE -> stopCatService()
         }
-
         return START_STICKY
     }
 
-    private fun setStopForegroundService() {
+    private fun stopCatService() {
         stopForeground(true)
         stopSelf()
     }
 
-    private fun setForegroundService() {
+    private fun startCatService() {
         createNotificationChannel()
         startForeground(11, loadNotification())
     }
-
 
     override fun onBind(intent: Intent?) = null
 
@@ -99,13 +88,13 @@ class CopyService : Service() {
         when (buttonType) {
             CatOverlay.OnCatButtonClickListener.ButtonType.WEB -> intent.putExtra(
                 SearchManager.QUERY,
-                clipBoard.primaryClip.getItemAt(0).text
+                clipBoard.primaryClip?.getItemAt(0)?.text
             )
             CatOverlay.OnCatButtonClickListener.ButtonType.DICTIONARY -> intent.putExtra(
                 SearchManager.QUERY,
-                "meaning: " + clipBoard.primaryClip.getItemAt(0).text
+                "meaning: " + clipBoard.primaryClip?.getItemAt(0)?.text
             )
-            else -> intent.putExtra(SearchManager.QUERY, "Translate " + clipBoard.primaryClip.getItemAt(0).text)
+            else -> intent.putExtra(SearchManager.QUERY, "Translate " + clipBoard.primaryClip?.getItemAt(0)?.text)
         }
         startActivity(intent)
         closeOverlay()
@@ -120,16 +109,14 @@ class CopyService : Service() {
 
         val intent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
-        val mBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+
+        return NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_background)
             .setContentTitle("Hello")
             .setContentText("remind")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .build()
-
-
-        return mBuilder
     }
 
     private fun createNotificationChannel() {
@@ -140,7 +127,6 @@ class CopyService : Service() {
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                 description = descriptionText
             }
-            // Register the channel with the system
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
