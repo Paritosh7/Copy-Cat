@@ -9,7 +9,8 @@
             android:layout_width="@dimen/cat_button_size"
             android:layout_height="@dimen/cat_button_size"
             android:layout_gravity="center"
-            android:background="@color/colorPrimaryDark"
+            app:drawableCollapsed="@drawable/ic_cat"
+            app:drawableExpanded="@drawable/ic_cat_pressed"
             app:radius="80dp">
 
         <android.support.v7.widget.AppCompatImageButton
@@ -17,7 +18,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:src="@drawable/web"
+                android:src="@drawable/ic_web"
                 app:angle="120"/>
 
         <android.support.v7.widget.AppCompatImageButton
@@ -25,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:src="@drawable/dictionary"
+                android:src="@drawable/ic_dictionary"
                 app:angle="180"/>
 
         <android.support.v7.widget.AppCompatImageButton
@@ -33,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:src="@drawable/translation"
+                android:src="@drawable/ic_translate"
                 app:angle="240"/>
 
     </com.example.paritosh.copycat.CatButtonLayout>

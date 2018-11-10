@@ -2,6 +2,8 @@ package com.example.paritosh.copycat
 
 import android.animation.Animator
 import android.content.Context
+import android.graphics.drawable.Drawable
+import android.support.annotation.DrawableRes
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
@@ -18,27 +20,42 @@ class CatButtonLayout @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private var isExpanded: Boolean = false
+        set(value) {
+            field = value
+            mainButton?.setImageDrawable(
+                if (value)
+                    mainButtonDrawableExpanded
+                else
+                    mainButtonDrawableCollapsed
+            )
+        }
 
     private val RADIUS: Float
+    private var mainButton: ImageButton? = null
+    @DrawableRes
+    private val mainButtonDrawableCollapsed: Drawable?
+    @DrawableRes
+    private val mainButtonDrawableExpanded: Drawable?
 
     init {
         val a = context.obtainStyledAttributes(attrs, R.styleable.CatButtonLayout)
         RADIUS = a.getDimension(R.styleable.CatButtonLayout_radius, 0f)
+        mainButtonDrawableCollapsed = a.getDrawable(R.styleable.CatButtonLayout_drawableCollapsed)
+        mainButtonDrawableExpanded = a.getDrawable(R.styleable.CatButtonLayout_drawableExpanded)
         a.recycle()
     }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        addView(
-            ImageButton(context).apply {
-                layoutParams =
-                        LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT)
-                            .apply { gravity = Gravity.END or Gravity.CENTER or Gravity.DISPLAY_CLIP_HORIZONTAL }
-                setImageResource(R.drawable.cat)
-                setBackgroundResource(R.drawable.cat_button_bg_selector)
-                setOnClickListener { if (isExpanded) collapse() else expand() }
-            }
-        )
+        mainButton = ImageButton(context).apply {
+            layoutParams =
+                    LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT)
+                        .apply { gravity = Gravity.END or Gravity.CENTER or Gravity.DISPLAY_CLIP_HORIZONTAL }
+            setImageDrawable(mainButtonDrawableCollapsed)
+            setBackgroundResource(R.drawable.cat_button_bg_selector)
+            setOnClickListener { if (isExpanded) collapse() else expand() }
+        }
+        addView(mainButton)
         iterateOverChildButtons { i ->
             (getChildAt(i).layoutParams as LayoutParams).gravity = Gravity.END or Gravity.CENTER or
                     Gravity.DISPLAY_CLIP_HORIZONTAL

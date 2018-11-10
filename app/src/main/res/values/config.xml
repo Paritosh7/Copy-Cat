@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="cat_button_timeout">5000</integer>
-    <fraction name="cat_button_overflow_x">100%</fraction>
+    <integer name="cat_button_timeout">15000</integer>
+    <fraction name="cat_button_overflow_x">10%</fraction>
     <fraction name="cat_button_position_y">25%</fraction>
-    <fraction name="cat_button_shrink">90%</fraction>
-    <integer name="cat_button_animation_duration">500</integer>
-    <integer name="cat_button_animation_repeat_count">10</integer>
-
-    <string name="shared_preferences_name">POPUP_DICTIONARY</string>
-    <string name="popup_service_activated_status_key">popup_service_activated_status_key</string>
-
-    <string name="popup_service_search_query_postfix">&#160;meaning</string>
 </resources>

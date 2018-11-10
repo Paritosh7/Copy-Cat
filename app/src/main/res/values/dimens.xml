@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="popup_elevation">100dp</dimen>
-    <dimen name="cat_button_home_size">240dp</dimen>
-    <dimen name="cat_button_home_padding_for_wave">64dp</dimen>
     <dimen name="cat_button_size">240dp</dimen>
-    <dimen name="cat_button_padding_for_wave">24dp</dimen>
 </resources>

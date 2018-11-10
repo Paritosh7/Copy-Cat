@@ -2,6 +2,8 @@
 <resources>
     <declare-styleable name="CatButtonLayout">
         <attr name="radius" format="dimension" />
+        <attr name="drawableCollapsed" format="reference" />
+        <attr name="drawableExpanded" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="CatButtonLayout_Layout">
