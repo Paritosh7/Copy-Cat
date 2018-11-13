@@ -1,10 +1,8 @@
 package com.example.paritosh.copycat
 
 import android.app.*
-import android.content.ClipboardManager
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
+import android.content.*
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import android.os.Build
 import android.support.annotation.RequiresApi
@@ -23,6 +21,31 @@ class CopyService : Service() {
     }
 
     private var overlay: CatOverlay? = null
+
+    private val onPrimaryClipChangedListener = ClipboardManager.OnPrimaryClipChangedListener {
+        if (!PermissionHelper.isOverlayPermissionAvailable(this@CopyService)) {
+            Toast.makeText(this@CopyService, R.string.overlay_permission_unavailable_message, Toast.LENGTH_LONG).show()
+            return@OnPrimaryClipChangedListener
+        }
+
+        val clipBoardManager: ClipboardManager? = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val text = clipBoardManager?.primaryClip?.getItemAt(0)?.text
+
+        if (text.isNullOrBlank())
+            return@OnPrimaryClipChangedListener
+
+        if (overlay == null || !overlay!!.isShowing)
+            overlay = CatOverlay(this@CopyService)
+
+        overlay?.setOnCatButtonClickListener(object : CatOverlay.OnCatButtonClickListener {
+            override fun onCatButtonClick(buttonType: CatOverlay.OnCatButtonClickListener.ButtonType) {
+                executeActionForText(text.toString(), buttonType)
+                closeOverlay()
+            }
+        })
+
+        showOverlayWithTimeout()
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -53,24 +76,12 @@ class CopyService : Service() {
 
     private fun registerClipboardListener() {
         val clipBoardManager: ClipboardManager? = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        clipBoardManager?.addPrimaryClipChangedListener {
-            val text = clipBoardManager.primaryClip?.getItemAt(0)?.text
+        clipBoardManager?.addPrimaryClipChangedListener(onPrimaryClipChangedListener)
+    }
 
-            if (text.isNullOrEmpty() || !text!!.isValidForSearch())
-                return@addPrimaryClipChangedListener
-
-            if (overlay == null || !overlay!!.isShowing)
-                overlay = CatOverlay(this)
-
-            overlay?.setOnCatButtonClickListener(object : CatOverlay.OnCatButtonClickListener {
-                override fun onCatButtonClick(buttonType: CatOverlay.OnCatButtonClickListener.ButtonType) {
-                    executeActionForText(text.toString(), buttonType)
-                    closeOverlay()
-                }
-            })
-
-            showOverlayWithTimeout()
-        }
+    private fun unregisterClipboardListener() {
+        val clipBoardManager: ClipboardManager? = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipBoardManager?.removePrimaryClipChangedListener(onPrimaryClipChangedListener)
     }
 
     private fun showOverlayWithTimeout() {
@@ -94,8 +105,12 @@ class CopyService : Service() {
             CatOverlay.OnCatButtonClickListener.ButtonType.TRANSLATE -> buildTranslateIntent(text)
         }
         try {
-            startActivity(intent)
+            startActivity(intent.apply { addFlags(FLAG_ACTIVITY_NEW_TASK) })
+        } catch (e: ActivityNotFoundException) {
+            e.printStackTrace()
+            Toast.makeText(this, R.string.google_translate_error_message, Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
+            e.printStackTrace()
             Toast.makeText(this, R.string.generic_error_message, Toast.LENGTH_SHORT).show()
         }
     }
@@ -105,7 +120,7 @@ class CopyService : Service() {
     }
 
     private fun buildDictionaryIntent(text: String) = Intent(Intent.ACTION_VIEW).apply {
-        data = Uri.parse("https://www.dictionary.com/browse/$text")
+        data = Uri.parse(getString(R.string.dictionary_url, text))
     }
 
     private fun buildTranslateIntent(text: String) = Intent().apply {
@@ -129,9 +144,9 @@ class CopyService : Service() {
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_background)
-            .setContentTitle("Hello")
-            .setContentText("remind")
+            .setSmallIcon(R.drawable.ic_cat)
+            .setContentTitle(getString(R.string.cat_notification_title))
+            .setContentText(getString(R.string.cat_notification_text))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .build()
@@ -150,8 +165,9 @@ class CopyService : Service() {
         notificationManager.createNotificationChannel(channel)
     }
 
-    private fun CharSequence.isValidForSearch(): Boolean {
-        return true
+    override fun onDestroy() {
+        unregisterClipboardListener()
+        super.onDestroy()
     }
 }
 

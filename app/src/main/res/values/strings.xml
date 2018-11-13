@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Copy Cat</string>
-    <string name="channel_name">copyCatChannel</string>
-    <string name="channel_description">App is running</string>
+    <string name="channel_name">Copy Cat Channel</string>
+    <string name="channel_description">Copy Cat is running</string>
     <string name="generic_error_message">Something went wrong!</string>
+    <string name="overlay_permission_unavailable_message">Copy Cat is seeking overlay permission</string>
+    <string name="cat_notification_title">Copy Cat</string>
+    <string name="cat_notification_text">Service is running&#8230;</string>
+    <string name="service_toggle_text">Copy Cat Service Toggle</string>
+    <string name="google_translate_error_message">Please install google translate to use this feature</string>
 </resources>

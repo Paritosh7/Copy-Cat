@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="cat_button_timeout">15000</integer>
+    <integer name="cat_button_timeout">5000</integer>
     <fraction name="cat_button_overflow_x">10%</fraction>
     <fraction name="cat_button_position_y">25%</fraction>
+
+    <string name="dictionary_url">https://www.dictionary.com/browse/%1$s</string>
 </resources>

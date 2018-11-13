@@ -6,9 +6,8 @@ import android.content.Intent
 
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
-            if (PermissionHelper.loadBackgroundPermission(context))
-                context.postActionToCatService(CopyService.ACTION_START_FOREGROUND_SERVICE, true)
+        if (intent.action == Intent.ACTION_BOOT_COMPLETED && PermissionHelper.isCatServiceEnabled(context)) {
+            context.postActionToCatService(CopyService.ACTION_START_FOREGROUND_SERVICE, true)
         }
     }
 }

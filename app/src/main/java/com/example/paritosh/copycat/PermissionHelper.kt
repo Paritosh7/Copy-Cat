@@ -1,19 +1,27 @@
 package com.example.paritosh.copycat
 
 import android.content.Context
+import android.os.Build
+import android.provider.Settings
 
 object PermissionHelper {
 
-    private const val BACKGROUND_PREFERENCES = "BACKGROUND_PREFERENCES"
-    private const val BACKGROUND_PERMISSION_KEY = "BACKGROUND_PERMISSION_KEY"
+    private const val CAT_PERMISSION_PREFERENCES = "CAT_PERMISSION_PREFERENCES"
+    private const val CAT_SERVICE_STATUS_KEY = "CAT_SERVICE_STATUS_KEY"
 
-    fun loadBackgroundPermission(context: Context) =
-        context.getSharedPreferences(BACKGROUND_PREFERENCES, Context.MODE_PRIVATE)
-            .getBoolean(BACKGROUND_PERMISSION_KEY, false)
+    fun isCatServiceEnabled(context: Context) =
+        context.getSharedPreferences(CAT_PERMISSION_PREFERENCES, Context.MODE_PRIVATE)
+            .getBoolean(CAT_SERVICE_STATUS_KEY, false)
 
-    fun updateBackgroundPermission(context: Context, enabled: Boolean) =
-        context.getSharedPreferences(BACKGROUND_PREFERENCES, Context.MODE_PRIVATE)
+    fun updateCatServiceStatus(context: Context, enabled: Boolean) =
+        context.getSharedPreferences(CAT_PERMISSION_PREFERENCES, Context.MODE_PRIVATE)
             .edit()
-            .putBoolean(BACKGROUND_PERMISSION_KEY, enabled)
+            .putBoolean(CAT_SERVICE_STATUS_KEY, enabled)
             .apply()
+
+    fun isOverlayPermissionAvailable(context: Context): Boolean = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        Settings.canDrawOverlays(context)
+    } else {
+        true
+    }
 }
