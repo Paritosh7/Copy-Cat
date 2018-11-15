@@ -7,8 +7,7 @@ An Android application which provides a user with three basic functionalities wh
 
 
 Project Details
-
- Custom View implementation of an exploding button, once tapped provides child views with the above described functionalities. 
- Used Window Manager for an Overlay that appears on the screen only when a user has copied something. Also the Overlay will   automatically disappear within 5 seconds, giving user adequate time to perform an action.
- Gracefully handling Foreground and Background Services based on the user’s SDK version. 
- The Service will automatically restart once the phone is turned on after being switched off (or restarted). This will based on user’s prior permission to start the Service.
+Custom View implementation of an exploding button, once tapped provides child views with the above described functionalities.
+Used Window Manager for an Overlay that appears on the screen only when a user has copied something. Also the Overlay will automatically disappear within 5 seconds, giving user adequate time to perform an action.
+Gracefully handling Foreground and Background Services based on the user’s SDK version.
+The Service will automatically restart once the phone is turned on after being switched off (or restarted). This will based on user’s prior permission to start the Service.
