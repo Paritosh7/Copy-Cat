@@ -1,13 +1,23 @@
 # Copy-Cat
-An Android application which provides a user with three basic functionalities whenever he/she copies a text. These functionalities are as follows:-
-1. A web search of the given text.
-2. Meaning of the word  (dictionary.com).
-3. Translation of the word to any language using Google Translate. 
+
+## Overview
+
+An Android application which provides user with three basic functionalities to choose from whenever a text is copied.
+
+***Fuctionalities***
+- Web search of the given text.
+- Meaning of the text using dictionary.com.
+- Translation of the word to any language using Google Translate. 
 
 
+## Project Details 
 
-Project Details
-Custom View implementation of an exploding button, once tapped provides child views with the above described functionalities.
-Used Window Manager for an Overlay that appears on the screen only when a user has copied something. Also the Overlay will automatically disappear within 5 seconds, giving user adequate time to perform an action.
-Gracefully handling Foreground and Background Services based on the user’s SDK version.
-The Service will automatically restart once the phone is turned on after being switched off (or restarted). This will based on user’s prior permission to start the Service.
+- Custom View implementation of an exploding button, once tapped provides three child views with the above described functionalities.
+- Window Manager is used for an Overlay that appears on the screen only when a user has copied something.
+- Services are used to subscribe to the Clipboard events. The application gracefully handles Foreground and Background Services based on the device’s SDK version.
+- The application will start the Service once the device is turned on or restarted, this will be based on user’s preference for the application.
+
+
+## Technologies Used
+
+- Kotlin
