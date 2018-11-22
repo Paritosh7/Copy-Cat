@@ -1,6 +1,6 @@
 # Copy Cat
 
-## Overview
+### Overview
 
 An Android application which provides user with three basic functionalities to choose from whenever a text is copied.
 
@@ -10,7 +10,7 @@ An Android application which provides user with three basic functionalities to c
 - Translation of the word to any language using Google Translate. 
 
 
-## Project Details 
+### Project Details 
 
 - Custom View implementation of an exploding button, once tapped provides three child views with the above described functionalities.
 - Window Manager is used for an Overlay that appears on the screen only when a user has copied something.
@@ -18,6 +18,6 @@ An Android application which provides user with three basic functionalities to c
 - The application will start the Service once the device is turned on or restarted, this will be based on user’s preference for the application.
 
 
-## Technologies Used
+### Technologies Used
 
 - Kotlin
