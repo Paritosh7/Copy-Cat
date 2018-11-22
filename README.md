@@ -1,4 +1,4 @@
-# Copy-Cat
+# Copy Cat
 
 ## Overview
 
