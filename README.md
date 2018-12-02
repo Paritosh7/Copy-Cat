@@ -4,9 +4,9 @@
 
 An Android application which provides the following functionalities to choose from whenever a text is copied anywhere on the device:
 
-- Web search of the given text.
-- Meaning of the text using dictionary.com.
-- Translation of the text to any language using Google Translate. 
+- Web search of the given text
+- Meaning of the text using dictionary.com
+- Translation of the text to any language using Google Translate
 
 
 ### Project Details 
